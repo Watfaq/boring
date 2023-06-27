@@ -329,6 +329,7 @@ fn main() {
     use std::env;
 
     println!("cargo:rerun-if-env-changed=BORING_BSSL_PATH");
+    println!("cargo:rerun-if-env-changed=BORING_BSSL_BAZEL_PATH");
     let bssl_dir = std::env::var("BORING_BSSL_PATH").unwrap_or_else(|_| {
         if !Path::new(BORING_SSL_PATH).join("CMakeLists.txt").exists() {
             println!("cargo:warning=fetching boringssl git submodule");
@@ -365,6 +366,8 @@ fn main() {
         cfg.build_target("crypto").build().display().to_string()
     });
 
+    let bssl_dir = std::env::var("BORING_BSSL_BAZEL_PATH").unwrap_or(bssl_dir);
+
     let build_path = get_boringssl_platform_output_path();
     if cfg!(feature = "fips") {
         println!(
@@ -376,10 +379,14 @@ fn main() {
             bssl_dir, build_path
         );
     } else {
-        println!(
-            "cargo:rustc-link-search=native={}/build/{}",
-            bssl_dir, build_path
-        );
+        if std::env::var("BORING_BSSL_BAZEL_PATH").is_ok() {
+            println!("cargo:rustc-link-search=native={}/{}", bssl_dir, build_path);
+        } else {
+            println!(
+                "cargo:rustc-link-search=native={}/build/{}",
+                bssl_dir, build_path
+            );
+        }
     }
 
     println!("cargo:rustc-link-lib=static=crypto");
