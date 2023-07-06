@@ -468,6 +468,7 @@ fn main() {
         "ripemd.h",
         "siphash.h",
         "srtp.h",
+        "ssl.h",
         "trust_token.h",
         "x509v3.h",
     ];
