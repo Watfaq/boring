@@ -457,6 +457,7 @@ fn main() {
         "hrss.h",
         "md4.h",
         "md5.h",
+        "nid.h",
         "obj_mac.h",
         "objects.h",
         "opensslv.h",
@@ -468,7 +469,6 @@ fn main() {
         "ripemd.h",
         "siphash.h",
         "srtp.h",
-        "ssl.h",
         "trust_token.h",
         "x509v3.h",
     ];
