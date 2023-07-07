@@ -145,7 +145,7 @@ fn get_boringssl_cmake_config() -> cmake::Config {
     let target = std::env::var("TARGET").unwrap();
     let pwd = std::env::current_dir().unwrap();
 
-    let mut boringssl_cmake = cmake::Config::new(BORING_SSL_PATH);
+    let mut boringssl_cmake = cmake::Config::new(format!("{}/{}", BORING_SSL_PATH, "src"));
     if host != target {
         // Add platform-specific parameters for cross-compilation.
         match os.as_ref() {
@@ -363,7 +363,6 @@ fn main() {
         }
 
         cfg.build_target("ssl").build();
-        cfg.build_target("decrepit").build();
         cfg.build_target("crypto").build().display().to_string()
     });
 
