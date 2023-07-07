@@ -363,6 +363,7 @@ fn main() {
         }
 
         cfg.build_target("ssl").build();
+        cfg.build_target("decrepit").build();
         cfg.build_target("crypto").build().display().to_string()
     });
 
