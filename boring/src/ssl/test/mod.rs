@@ -1048,7 +1048,6 @@ fn _check_kinds() {
     is_sync::<SslStream<TcpStream>>();
 }
 
-#[cfg(not(osslconf = "OPENSSL_NO_PSK"))]
 #[test]
 fn psk_ciphers() {
     const CIPHER: &str = "PSK-AES128-CBC-SHA";
@@ -1115,4 +1114,24 @@ fn session_cache_size() {
     ctx.set_session_cache_size(1234);
     let ctx = ctx.build();
     assert_eq!(ctx.session_cache_size(), 1234);
+}
+
+#[cfg(feature = "kx-safe-default")]
+#[test]
+fn client_set_default_curves_list() {
+    let ssl_ctx = SslContextBuilder::new(SslMethod::tls()).unwrap().build();
+    let mut ssl = Ssl::new(&ssl_ctx).unwrap();
+
+    ssl.client_set_default_curves_list()
+        .expect("Failed to set curves list. Is Kyber768 missing in boringSSL?")
+}
+
+#[cfg(feature = "kx-safe-default")]
+#[test]
+fn server_set_default_curves_list() {
+    let ssl_ctx = SslContextBuilder::new(SslMethod::tls()).unwrap().build();
+    let mut ssl = Ssl::new(&ssl_ctx).unwrap();
+
+    ssl.server_set_default_curves_list()
+        .expect("Failed to set curves list. Is Kyber768 missing in boringSSL?")
 }
