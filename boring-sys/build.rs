@@ -538,6 +538,7 @@ fn build_boring_from_sources() -> String {
     }
 
     cfg.build_target("ssl").build();
+    cfg.build_target("decrepit").build();
     cfg.build_target("crypto").build().display().to_string()
 }
 
@@ -622,21 +623,19 @@ fn main() {
     };
     let build_path = get_boringssl_platform_output_path();
 
-    if cfg!(any(feature = "fips", feature = "fips-link-precompiled")) {
-        println!(
-            "cargo:rustc-link-search=native={}/{}crypto/{}",
-            bssl_dir, intermidiate_path, build_path
-        );
-        println!(
-            "cargo:rustc-link-search=native={}/{}ssl/{}",
-            bssl_dir, intermidiate_path, build_path
-        );
-    } else {
-        println!(
-            "cargo:rustc-link-search=native={}/{}{}",
-            bssl_dir, intermidiate_path, build_path
-        );
-    }
+    // no idea when cmake decides to put targets under build/{}/{}.a
+    println!(
+        "cargo:rustc-link-search=native={}/{}crypto/{}",
+        bssl_dir, intermidiate_path, build_path
+    );
+    println!(
+        "cargo:rustc-link-search=native={}/{}ssl/{}",
+        bssl_dir, intermidiate_path, build_path
+    );
+    println!(
+        "cargo:rustc-link-search=native={}/{}decrepit/{}",
+        bssl_dir, intermidiate_path, build_path
+    );
 
     if cfg!(feature = "fips-link-precompiled") {
         link_in_precompiled_bcm_o(&bssl_dir);
