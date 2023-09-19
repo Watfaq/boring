@@ -537,6 +537,8 @@ fn build_boring_from_sources() -> String {
         cfg.define("FIPS", "1");
     }
 
+    cfg.define("NO_INSTALL_BSSL", "yes");
+
     cfg.build_target("ssl").build();
     cfg.build_target("decrepit").build();
     cfg.build_target("crypto").build().display().to_string()
