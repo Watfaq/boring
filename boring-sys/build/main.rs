@@ -602,29 +602,28 @@ fn main() {
     let bssl_dir = built_boring_source_path(&config);
     let build_path = get_boringssl_platform_output_path(&config);
 
-    if config.features.fips || config.features.fips_link_precompiled {
-        println!(
-            "cargo:rustc-link-search=native={}/build/crypto/{}",
-            bssl_dir.display(),
-            build_path
-        );
-        println!(
-            "cargo:rustc-link-search=native={}/build/ssl/{}",
-            bssl_dir.display(),
-            build_path
-        );
-        println!(
-            "cargo:rustc-link-search=native={}/lib/{}",
-            bssl_dir.display(),
-            build_path
-        );
-    } else {
-        println!(
-            "cargo:rustc-link-search=native={}/{}",
-            bssl_dir.display(),
-            build_path
-        );
-    }
+    // search everywhere
+    println!(
+        "cargo:rustc-link-search=native={}/build/crypto/{}",
+        bssl_dir.display(),
+        build_path
+    );
+    println!(
+        "cargo:rustc-link-search=native={}/build/ssl/{}",
+        bssl_dir.display(),
+        build_path
+    );
+    println!(
+        "cargo:rustc-link-search=native={}/lib/{}",
+        bssl_dir.display(),
+        build_path
+    );
+
+    println!(
+        "cargo:rustc-link-search=native={}/build/{}",
+        bssl_dir.display(),
+        build_path
+    );
 
     if config.features.fips_link_precompiled {
         link_in_precompiled_bcm_o(&config);
