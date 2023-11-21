@@ -620,7 +620,7 @@ fn main() {
         );
     } else {
         println!(
-            "cargo:rustc-link-search=native={}/build/{}",
+            "cargo:rustc-link-search=native={}/{}",
             bssl_dir.display(),
             build_path
         );
